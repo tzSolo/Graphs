@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "הזמן שלי",
+  "version": "1.0",
+  "description": "Tracks time spent on each site and shows usage graphs.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "permissions": [
+    "tabs",
+    "storage"
+  ]
+}
