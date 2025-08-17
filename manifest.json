@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "הזמן שלי",
+  "name": "מחשבון הזמן",
   "version": "1.0",
-  "description": "Tracks time spent on each site and shows usage graphs.",
+  "description": "הצגת גרפים על השימוש באיטרנט.",
   "action": {
     "default_popup": "popup.html"
   },
@@ -15,6 +15,8 @@
   ],
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "activeTab",
+    "scripting"
   ]
 }

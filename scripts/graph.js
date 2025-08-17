@@ -74,7 +74,7 @@ function drawChart(labels, dataValues) {
                 },
                 title: {
                     display: true,
-                    text: 'הסטוריית שימוש באינטרנט'
+                    text: 'הסטוריית השימוש באינטרנט'
                 }
             }
         }

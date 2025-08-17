@@ -1,0 +1,75 @@
+::selection {
+    background-color: white;
+    color: black;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
+#select-category {
+    direction: rtl;
+    position: fixed;
+    top: 60px;
+    right: 60px;
+    z-index: 1000;
+    color: black;
+    background-color: #6ada3b;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#select-category * {
+    font-family: "Noto Sans Hebrew", "Roboto", sans-serif;
+}
+
+#select-category h2 {
+    margin: 0;
+    font-size: 25px;
+}
+
+#select-category form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+#select-category form div {
+    padding: 3px 0;
+}
+
+#select-category form button {
+    align-self: end;
+    margin: 5px 0;
+    background-color: white;
+    border: 1px solid black;
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#select-category form button:hover {
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+}
+
+#select-category input[type='text'] {
+    width: 125px;
+    border-radius: 5px;
+}
+
+#select-category input[type='radio'] {
+    accent-color: black;
+}
+
+#cont-another-category {
+    display: none;
+}

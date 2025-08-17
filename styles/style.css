@@ -1,0 +1,21 @@
+:root {
+    text-align: center;
+    direction: rtl;
+    font-family: "Noto Sans Hebrew", "Roboto", sans-serif;
+}
+
+::selection {
+    background-color: greenyellow;
+    color: black;
+}
+
+body {
+    padding: 20px;
+    border: 1px solid #6ada3b;
+    border-radius: 15px;
+}
+
+h1 {
+    margin: 0;
+    color: greenyellow;
+}
