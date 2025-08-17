@@ -1,75 +1,74 @@
-::selection {
-    background-color: white;
-    color: black;
+body #overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    z-index: 999 !important;
+    background-color: rgba(128, 128, 128, 0.5) !important;
 }
 
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 999;
-    background-color: rgba(128, 128, 128, 0.5);
+body div#select-category {
+    direction: rtl !important;
+    position: fixed !important;
+    top: 60px !important;
+    right: 60px !important;
+    z-index: 1000 !important;
+    color: black !important;
+    background-color: #6ada3b !important;
+    padding: 15px !important;
+    border-radius: 10px !important;
+    font-family: "Noto Sans Hebrew", "Roboto", sans-serif !important;
 }
 
-#select-category {
-    direction: rtl;
-    position: fixed;
-    top: 60px;
-    right: 60px;
-    z-index: 1000;
-    color: black;
-    background-color: #6ada3b;
-    padding: 15px;
-    border-radius: 10px;
+body div#select-category::selection {
+    background-color: white !important;
+    color: black !important;
 }
 
-#select-category * {
-    font-family: "Noto Sans Hebrew", "Roboto", sans-serif;
+body div#select-category h2 {
+    margin: 0 !important;
+    font-size: 25px !important;
+    font-weight: 700 !important;
 }
 
-#select-category h2 {
-    margin: 0;
-    font-size: 25px;
+body div#select-category form {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-around !important;
+    align-items: flex-start !important;
 }
 
-#select-category form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-start;
+body div#select-category form div {
+    padding: 3px 0 !important;
 }
 
-#select-category form div {
-    padding: 3px 0;
+body div#select-category form button {
+    align-self: end !important;
+    margin: 5px 0 !important;
+    background-color: white !important;
+    border: 1px solid black !important;
+    padding: 4px 12px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
 }
 
-#select-category form button {
-    align-self: end;
-    margin: 5px 0;
-    background-color: white;
-    border: 1px solid black;
-    padding: 4px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+body div#select-category form button:hover {
+    background-color: black !important;
+    border: 1px solid white !important;
+    color: white !important;
 }
 
-#select-category form button:hover {
-    background-color: black;
-    border: 1px solid white;
-    color: white;
+body div#select-category input[type='text'] {
+    width: 125px !important;
+    padding: 0 !important;
+    border-radius: 5px !important;
 }
 
-#select-category input[type='text'] {
-    width: 125px;
-    border-radius: 5px;
+body div#select-category input[type='radio'] {
+    accent-color: black !important;
 }
 
-#select-category input[type='radio'] {
-    accent-color: black;
-}
-
-#cont-another-category {
+body div#select-category #cont-another-category {
     display: none;
 }
