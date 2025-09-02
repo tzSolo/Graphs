@@ -5,17 +5,54 @@
 }
 
 ::selection {
-    background-color: greenyellow;
+    background-color: #6ada3b;
     color: black;
 }
 
 body {
-    padding: 20px;
+    padding: 0 20px;
     border: 1px solid #6ada3b;
     border-radius: 15px;
 }
 
 h1 {
     margin: 0;
-    color: greenyellow;
+    padding-top: 10px;
+    color: #6ada3b;
+}
+
+h3 {
+    margin: 5px 0;
+    display: none;
+}
+
+#no-data {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button {
+    font-size: 15px;
+    margin: 10px 5px;
+    background-color: white;
+    border: 1px solid #6ada3b;
+    color: #6ada3b;
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+button:hover,
+button:focus {
+    background-color: #6ada3b;
+    border: 1px solid white;
+    color: white;
+    box-shadow: 0 0 5px gray;
+}
+
+h4 {
+    margin: 10px 0 0;
 }

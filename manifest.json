@@ -1,13 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "מחשבון הזמן",
+  "name": "מבחן המציאות",
   "version": "1.0",
-  "description": "הצגת גרפים על השימוש באיטרנט.",
+  "description": "התוסף ששם את הנתונים מול העיניים: ניתוח חודשי של דפוסי השימוש באינטרנט, בצורה ברורה ונוחה.",
   "action": {
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "scripts/background.js"
+    "service_worker": "scripts/background.js",
+    "type": "module"
   },
   "host_permissions": [
     "http://*/*",

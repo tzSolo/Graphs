@@ -5,15 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graphs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew&family=Roboto&display=swap">
     <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
-    <h1>מחשבון הזמן</h1>
+    <h1>מבחן המציאות</h1>
+    <h3></h3>
+    <button id="domain">אתרים</button>
+    <button id="category">קטגוריות</button>
     <canvas id="historyChart" width="400" height="400"></canvas>
-    
+    <h3 id="no-data">עדיין אין נתונים לחודש זה.</h3>
+
+    <h4>צביה סולובייצ'יק | 0504114734 | t0504114734@gmail.com</h4>
+
     <script src="scripts/chart.js"></script>
-    <script type="module" src="scripts/graph.js"></script>
+    <script src="scripts/chartjs-plugin-datalabels.js"></script>
+    <script type="module" src="scripts/navigation.js"></script>
 </body>
 
 </html>

@@ -1,68 +1,74 @@
-chrome.storage.local.get(['timeSpentData'], (result) => {
-    let timeSpent = result.timeSpentData || [];
+import { getDateInString, DEFUALT_CATEGORIES } from './key.js';
 
-    const urls = []
-    const timeSpentData = []
-    timeSpent.forEach(item => {
-        urls.push(item.url);
-        timeSpentData.push(item.timeSpent);
+let arrTimeSpent = [];
+let arrCategory = [];
+let historyChart = null;
+
+async function getSavedCategoriesData() {
+    const arrCategoryOptions = await new Promise((resolve) => {
+        chrome.runtime.sendMessage({ action: "sendOptions" }, (res) => {
+            resolve(res);
+        });
     });
 
-    const [labels, dataValues] = concatSameUrls(urls, timeSpentData);
-    drawChart(labels, dataValues);
-});
-
-const concatSameUrls = (labels, dataValues) => {
-    let count, index;
-    const arrLabels = [];
-    const arrDataValues = [];
-
-    labels.map((l, i) => {
-        const withoutStart = l.split("/");
-        count = 0;
-        index = null;
-        for (let j = 0; j < withoutStart.length && !index; j++) {
-            if (withoutStart[j] == "")
-                count++;
-            else if (count > 0)
-                index = j;
-        }
-        const shortUrl = withoutStart[index];
-        
-        if (shortUrl != "newtab") {
-            const indexOfUrl = arrLabels.indexOf(shortUrl);
-            if (indexOfUrl == -1) {
-                arrLabels.push(shortUrl);
-                arrDataValues.push(dataValues[i]);
-            }
-            else {
-                arrDataValues[indexOfUrl] += dataValues[i];
-            }
-        }
-    })
-
-    return [arrLabels, arrDataValues];
+    const arrCategories = arrCategoryOptions.map(item => item.hebrew);
+    const arrdefualtCategories = DEFUALT_CATEGORIES.map(item => item.category);
+    arrCategory = [...arrCategories, ...arrdefualtCategories, "לא ידוע"];
 }
 
-function drawChart(labels, dataValues) {
-    const ctx = document.getElementById('historyChart').getContext('2d');
-    const historyChart = new Chart(ctx, {
+async function getSavedData(type) {
+    await chrome.runtime.sendMessage({ action: "sendData" });
+
+    const key = getDateInString();
+    const result = await chrome.storage.local.get(key);
+    const arrTimes = result[key] || [];
+    arrTimeSpent = arrTimes.filter(item => item.timeSpent > 0);
+
+    if (type === "category") {
+        await getSavedCategoriesData();
+    }
+
+    chrome.storage.local.set({ "lastView": new Date().toISOString() });
+}
+
+function calculateSumAll() {
+    const wholeTime = arrTimeSpent.reduce((sum, item) => sum += item.timeSpent, 0);
+    return wholeTime;
+}
+
+function partsOfTime(mSeconds) {
+    const seconds = String(Math.floor(mSeconds / 1000) % 60).padStart(2, "0");
+    const minutes = String(Math.floor(mSeconds / 1000 / 60) % 60).padStart(2, "0");
+    const houres = String(Math.floor(mSeconds / 1000 / 60 / 60)).padStart(2, "0");
+    return { seconds, minutes, houres };
+}
+
+function drawChart(labels, percentages) {
+    const ctx = document.getElementById("historyChart").getContext("2d");
+
+    if (historyChart !== null) {
+        historyChart.destroy();
+    }
+
+    historyChart = new Chart(ctx, {
         type: 'pie',
         data: {
             labels: labels,
             datasets: [{
-                labels: labels,
-                data: dataValues,
+                data: percentages,
                 backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 206, 86)',
-                    'rgb(37, 216, 37)',
-                    'rgb(228, 64, 23)',
-                    'rgb(4, 84, 84)',
-                    'rgb(208, 231, 29)'
+                    "#e6194b", "#9a6324", "#ffe119", "#3cb44b", "#4363d8",
+                    "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#bcf60c",
+                    "#fabebe", "#008080", "#e6beff", "#9a6324", "#fffac8",
+                    "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000075",
+                    "#808080", "#e6194b", "#3cb44b", "#ffe119", "#4363d8",
+                    "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#bcf60c",
+                    "#fabebe", "#008080", "#e6beff", "#9a6324", "#fffac8",
+                    "#800000", "#aaffc3", "#808000", "#ffd8b1", "#000075",
+                    "#808080", "#e6194b", "#3cb44b", "#ffe119", "#4363d8",
+                    "#f58231", "#911eb4", "#46f0f0", "#f032e6", "#bcf60c"
                 ],
-                borderColor: ['black'],
+                borderColor: 'black',
                 borderWidth: 0.5
             }]
         },
@@ -70,13 +76,66 @@ function drawChart(labels, dataValues) {
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'bottom',
+                    position: 'bottom'
                 },
                 title: {
-                    display: true,
-                    text: 'הסטוריית השימוש באינטרנט'
+                    display: false
                 }
             }
         }
-    });
+    })
+}
+
+export async function init(type = "category") {
+    let labels = [];
+    let percentages = [];
+
+    await getSavedData(type);
+
+    if (arrTimeSpent.length === 0) {
+        const h3 = document.getElementById("no-data");
+        h3.style.display = "inline-block";
+        return;
+    }
+    const h3 = document.querySelector("h3");
+    h3.style.display = "block";
+
+    const wholeTime = calculateSumAll();
+    const { seconds, minutes, houres } = partsOfTime(wholeTime);
+    if (houres !== "00") {
+        h3.innerText = `סה"כ שעות שימוש ${houres}:${minutes}`;
+    }
+    else {
+        h3.innerText = `סה"כ דקות שימוש ${minutes}:${seconds}`;
+    }
+    const singlePrecent = Number(wholeTime / 100);
+
+    if (type === "category") {
+        const arrCategories = arrCategory.map(cat => {
+            const total = arrTimeSpent
+                .filter(item => item.category === cat)
+                .reduce((sum, item) => sum + item.timeSpent, 0);
+
+            return { category: cat, total };
+        });
+
+        const arrPercentages = arrCategories.map((item) => {
+            const precent = Number((item.total / singlePrecent).toFixed(1));
+
+            const { seconds, minutes, houres } = partsOfTime(item.total);
+            const timeSpent = `${houres}:${minutes}:${seconds}`;
+            return { ...item, precent, timeSpent };
+        });
+        const arrData = arrPercentages.filter(item => item.precent > 0);
+
+        labels = arrData.map(item => `${item.precent}% \u200F- ${item.timeSpent} \u200F- ${item.category}`);
+        percentages = arrData.map(item => item.precent);
+    }
+    else {
+        arrTimeSpent.forEach(item => {
+            labels.push(item.domain);
+            percentages.push((item.timeSpent / singlePrecent).toFixed(1));
+        });
+    }
+    drawChart(labels, percentages);
 }
